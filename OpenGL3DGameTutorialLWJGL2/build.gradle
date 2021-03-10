@@ -1,0 +1,48 @@
+import org.gradle.internal.os.OperatingSystem
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+}
+
+group 'com.bobbyjap'
+version '1.0-SNAPSHOT'
+
+def lwjglVersion = '2.9.3'
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        project.ext.lwjglNatives = "linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "macosx"
+        break
+    case OperatingSystem.SOLARIS:
+        project.ext.lwjglNatives = "solaris"
+        break
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "windows"
+        break
+    default:
+        throw new GradleException('Current operating system not supported')
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    extraLibs
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.lwjgl.lwjgl:lwjgl:${lwjglVersion}"
+    implementation "org.lwjgl.lwjgl:lwjgl_util:${lwjglVersion}"
+}
+
+task execute(type: JavaExec) {
+    systemProperty('java.library.path', "$rootDir/libs/natives/${lwjglNatives}")
+
+    classpath(sourceSets.main.runtimeClasspath)
+    main('enginetester.MainGameLoopKt')
+}
