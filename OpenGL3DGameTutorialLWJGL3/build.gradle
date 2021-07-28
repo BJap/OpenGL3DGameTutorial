@@ -47,6 +47,10 @@ dependencies {
 
 task execute(type: JavaExec) {
     classpath(sourceSets.main.runtimeClasspath)
-    jvmArgs '-XstartOnFirstThread'
+    
+    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+        jvmArgs '-XstartOnFirstThread'
+    }
+    
     main('enginetester.MainGameLoopKt')
 }
