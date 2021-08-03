@@ -1,15 +1,10 @@
-package renderengine
+package models
 
-import models.RawModel
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.*
 import textures.TextureData
-import java.io.FileInputStream
-import java.io.IOException
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
-import javax.imageio.ImageIO
-import kotlin.system.exitProcess
 
 class Loader {
     private var vaoList = ArrayList<Int>()
@@ -19,40 +14,11 @@ class Loader {
     fun cleanUp() {
         vaoList.forEach(GL30::glDeleteVertexArrays)
         vboList.forEach(GL15::glDeleteBuffers)
-
         textureList.forEach(GL11::glDeleteTextures)
     }
 
-    fun loadToVAO(positions: FloatArray, dimensions: Int): RawModel {
-        val vaoID = createVAO()
-
-        storeDataInAttributesList(0, dimensions, positions)
-
-        unbindVAO()
-
-        return RawModel(vaoID, positions.size / dimensions)
-    }
-
-    fun loadToVAO(positions: FloatArray,
-                  textureCoordinates: FloatArray,
-                  normals: FloatArray,
-                  indices: IntArray
-    ): RawModel {
-        val vaoID = createVAO()
-
-        bindIndicesBuffer(indices)
-
-        storeDataInAttributesList(0, 3, positions)
-        storeDataInAttributesList(1, 2, textureCoordinates)
-        storeDataInAttributesList(2, 3, normals)
-
-        unbindVAO()
-
-        return RawModel(vaoID, indices.size)
-    }
-
     fun load2DTexture(path: String): Int {
-        val textureData = readImageFile(path)
+        val textureData = TextureData.fromImageFile(path)
         val textureId = GL11.glGenTextures()
 
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D)
@@ -97,7 +63,7 @@ class Loader {
         )
 
         for (i in texturePaths.indices) {
-            val textureData = readImageFile(texturePaths[i])
+            val textureData = TextureData.fromImageFile(texturePaths[i])
 
             GL11.glTexImage2D(
                 faces[i],
@@ -122,6 +88,34 @@ class Loader {
         return textureId
     }
 
+    fun loadToVAO(vertices: FloatArray, dimensions: Int): RawModel {
+        val vaoID = createVAO()
+
+        storeDataInAttributesList(vertices, 0, dimensions)
+
+        unbindVAO()
+
+        return RawModel(vaoID, vertices.size / dimensions)
+    }
+
+    fun loadToVAO(vertices: FloatArray,
+                  textureCoordinates: FloatArray,
+                  normals: FloatArray,
+                  indices: IntArray
+    ): RawModel {
+        val vaoID = createVAO()
+
+        bindIndicesBuffer(indices)
+
+        storeDataInAttributesList(vertices, 0, 3)
+        storeDataInAttributesList(textureCoordinates, 1, 2)
+        storeDataInAttributesList(normals, 2, 3)
+
+        unbindVAO()
+
+        return RawModel(vaoID, indices.size)
+    }
+
     private fun bindIndicesBuffer(indices: IntArray) {
         val vboID = GL15.glGenBuffers()
 
@@ -144,43 +138,7 @@ class Loader {
         return vaoID
     }
 
-    private fun readImageFile(path: String): TextureData {
-        val width: Int
-        val height: Int
-        val pixels: IntArray
-
-        try {
-            val image = ImageIO.read(FileInputStream(path))
-            width = image.width
-            height = image.height
-            pixels = IntArray(width * height)
-            image.getRGB(0, 0, width, height, pixels, 0, width)
-        } catch (e: IOException) {
-            System.err.println("Could not read file!")
-
-            e.printStackTrace()
-
-            exitProcess(-1)
-        }
-
-        val buffer = BufferUtils.createByteBuffer(width * height * 4)
-
-        for (y in 0 until height) {
-            for (x in 0 until width) {
-                val pixel = pixels[x + y * width]
-                buffer.put((pixel shr 16 and 0xFF).toByte())
-                buffer.put((pixel shr 8 and 0xFF).toByte())
-                buffer.put((pixel and 0xFF).toByte())
-                buffer.put((pixel shr 24 and 0xFF).toByte())
-            }
-        }
-
-        buffer.flip()
-
-        return TextureData(buffer, width, height)
-    }
-
-    private fun storeDataInAttributesList(attributeNumber: Int, coordinateSize: Int, data: FloatArray) {
+    private fun storeDataInAttributesList(data: FloatArray, attributeNumber: Int, coordinateSize: Int) {
         val vboID = GL15.glGenBuffers()
 
         vboList.add(vboID)
@@ -194,20 +152,22 @@ class Loader {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0)
     }
 
-    private fun storeDataInFloatBuffer(data: FloatArray): FloatBuffer {
-        val buffer = BufferUtils.createFloatBuffer(data.size)
-        buffer.put(data)
-        buffer.flip()
+    companion object {
+        private fun storeDataInFloatBuffer(data: FloatArray): FloatBuffer {
+            val buffer = BufferUtils.createFloatBuffer(data.size)
+            buffer.put(data)
+            buffer.flip()
 
-        return buffer
-    }
+            return buffer
+        }
 
-    private fun storeDataInIntBuffer(data: IntArray): IntBuffer {
-        val buffer = BufferUtils.createIntBuffer(data.size)
-        buffer.put(data)
-        buffer.flip()
+        private fun storeDataInIntBuffer(data: IntArray): IntBuffer {
+            val buffer = BufferUtils.createIntBuffer(data.size)
+            buffer.put(data)
+            buffer.flip()
 
-        return buffer
+            return buffer
+        }
     }
 
     private fun unbindVAO() {

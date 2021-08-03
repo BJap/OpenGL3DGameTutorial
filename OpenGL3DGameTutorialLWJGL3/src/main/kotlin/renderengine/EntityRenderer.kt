@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL30
 import shaders.StaticShader
-import util.createModelMatrix
+import util.createTransformationMatrix
 
 class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: Matrix4D) {
     init {
@@ -39,7 +39,7 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
     }
 
     private fun prepareInstance(entity: Entity) {
-        val modelMatrix = createModelMatrix(
+        val transformationMatrix = createTransformationMatrix(
             entity.position,
             entity.rotX,
             entity.rotY,
@@ -47,7 +47,7 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
             entity.scale
         )
 
-        staticShader.loadModelMatrix(modelMatrix)
+        staticShader.loadTransformationMatrix(transformationMatrix)
         staticShader.loadOffset(entity.textureXOffset, entity.textureYOffset)
     }
 

@@ -1,5 +1,6 @@
 package renderengine
 
+import models.Loader
 import models.RawModel
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
@@ -7,7 +8,7 @@ import org.lwjgl.opengl.GL20
 import org.lwjgl.opengl.GL30
 import shaders.GuiShader
 import textures.GuiTexture
-import util.createModelMatrix
+import util.createTransformationMatrix
 
 class GuiRenderer(loader: Loader) {
     private var quad: RawModel
@@ -37,9 +38,9 @@ class GuiRenderer(loader: Loader) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0)
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, gui.texture)
 
-            val modelMatrix = createModelMatrix(gui.position, gui.scale)
+            val transformationMatrix = createTransformationMatrix(gui.position, gui.scale)
 
-            guiShader.loadModelMatrix(modelMatrix)
+            guiShader.loadTransformationMatrix(transformationMatrix)
 
             GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.vertexCount)
         }

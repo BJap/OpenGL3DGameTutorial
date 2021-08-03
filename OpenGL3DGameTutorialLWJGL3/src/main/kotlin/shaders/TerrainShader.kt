@@ -14,12 +14,12 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var locationGTexture = -1
     private var locationLightColor = IntArray(MAX_LIGHTS)
     private var locationLightPosition = IntArray(MAX_LIGHTS)
-    private var locationModelMatrix = -1
     private var locationProjectionMatrix = -1
     private var locationRTexture = -1
     private var locationReflectivity = -1
     private var locationShineDamper = -1
     private var locationSkyColor = -1
+    private var locationTransformationMatrix = -1
     private var locationViewMatrix = -1
 
     init {
@@ -48,10 +48,6 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         }
     }
 
-    fun loadModelMatrix(transformation: Matrix4D) {
-        loadMatrix(locationModelMatrix, transformation)
-    }
-
     fun loadProjectionMatrix(projection: Matrix4D) {
         loadMatrix(locationProjectionMatrix, projection)
     }
@@ -63,6 +59,10 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
 
     fun loadSkyColor(r: Float, g: Float, b: Float) {
         loadVector3D(locationSkyColor, Vector3D(r, g, b))
+    }
+
+    fun loadTransformationMatrix(transformation: Matrix4D) {
+        loadMatrix(locationTransformationMatrix, transformation)
     }
 
     fun loadViewMatrix(camera: Camera) {
@@ -82,12 +82,12 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         locationBlendMap = getUniformLocation("blendMap")
         locationBTexture = getUniformLocation("bTexture")
         locationGTexture = getUniformLocation("gTexture")
-        locationModelMatrix = getUniformLocation("modelMatrix")
         locationProjectionMatrix = getUniformLocation("projectionMatrix")
         locationRTexture = getUniformLocation("rTexture")
         locationReflectivity = getUniformLocation("reflectivity")
         locationShineDamper = getUniformLocation("shineDamper")
         locationSkyColor = getUniformLocation("skyColor")
+        locationTransformationMatrix = getUniformLocation("transformationMatrix")
         locationViewMatrix = getUniformLocation("viewMatrix")
 
         for (i in 0 until MAX_LIGHTS) {

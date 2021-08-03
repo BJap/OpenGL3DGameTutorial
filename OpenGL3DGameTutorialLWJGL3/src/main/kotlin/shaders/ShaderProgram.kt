@@ -7,6 +7,7 @@ import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
 import java.io.BufferedReader
+import java.io.FileNotFoundException
 import java.io.FileReader
 import java.io.IOException
 import kotlin.system.exitProcess
@@ -98,10 +99,12 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
                     shaderSource.append(line).append("\n")
                 }
                 reader.close()
-            } catch (e: IOException) {
-                System.err.println("Could not read file!")
+            } catch (e: FileNotFoundException) {
+                System.err.println("Shader file does not exist\n${e.stackTraceToString()}")
 
-                e.printStackTrace()
+                exitProcess(-1)
+            } catch (e: IOException) {
+                System.err.println("Could not read shader file\n${e.stackTraceToString()}")
 
                 exitProcess(-1)
             }

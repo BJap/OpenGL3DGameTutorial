@@ -11,13 +11,13 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var locationAttenuation = IntArray(MAX_LIGHTS)
     private var locationLightColor = IntArray(MAX_LIGHTS)
     private var locationLightPosition = IntArray(MAX_LIGHTS)
-    private var locationModelMatrix = -1
     private var locationNumberOfRows = -1
     private var locationOffset = -1
     private var locationProjectionMatrix = -1
     private var locationReflectivity = -1
     private var locationShineDamper = -1
     private var locationSkyColor = -1
+    private var locationTransformationMatrix = -1
     private var locationUseFakeLighting = -1
     private var locationViewMatrix = -1
 
@@ -43,10 +43,6 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         }
     }
 
-    fun loadModelMatrix(modelMatrix: Matrix4D) {
-        loadMatrix(locationModelMatrix, modelMatrix)
-    }
-
     fun loadNumberOfRows(numberOfRows: Int) {
         loadInt(locationNumberOfRows, numberOfRows)
     }
@@ -68,6 +64,10 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector3D(locationSkyColor, Vector3D(r, g, b))
     }
 
+    fun loadTransformationMatrix(transformationMatrix: Matrix4D) {
+        loadMatrix(locationTransformationMatrix, transformationMatrix)
+    }
+
     fun loadViewMatrix(camera: Camera) {
         val viewMatrix = createViewMatrix(camera)
 
@@ -81,13 +81,13 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     override fun getAllUniformLocations() {
-        locationModelMatrix = getUniformLocation("modelMatrix")
         locationNumberOfRows = getUniformLocation("numberOfRows")
         locationOffset = getUniformLocation("offset")
         locationProjectionMatrix = getUniformLocation("projectionMatrix")
         locationReflectivity = getUniformLocation("reflectivity")
         locationShineDamper = getUniformLocation("shineDamper")
         locationSkyColor = getUniformLocation("skyColor")
+        locationTransformationMatrix = getUniformLocation("transformationMatrix")
         locationUseFakeLighting = getUniformLocation("useFakeLighting")
         locationViewMatrix = getUniformLocation("viewMatrix")
 

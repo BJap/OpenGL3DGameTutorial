@@ -5,6 +5,7 @@ import entities.Entity
 import entities.Light
 import entities.Player
 import input.MousePicker
+import models.Loader
 import renderengine.GuiRenderer
 import textures.GuiTexture
 import models.TexturedModel

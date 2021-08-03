@@ -1,5 +1,6 @@
 package renderengine
 
+import models.Loader
 import models.RawModel
 import org.lwjgl.util.vector.Vector2f
 import org.lwjgl.util.vector.Vector3f

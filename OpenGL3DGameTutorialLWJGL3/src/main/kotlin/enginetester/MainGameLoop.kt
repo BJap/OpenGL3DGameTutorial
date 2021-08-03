@@ -8,6 +8,7 @@ import geometry.Vector2D
 import geometry.Vector3D
 import input.Mouse
 import input.MousePicker
+import models.Loader
 import renderengine.GuiRenderer
 import textures.GuiTexture
 import models.TexturedModel

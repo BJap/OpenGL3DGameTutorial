@@ -1,6 +1,7 @@
 package renderengine
 
 import entities.Camera
+import models.Loader
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20

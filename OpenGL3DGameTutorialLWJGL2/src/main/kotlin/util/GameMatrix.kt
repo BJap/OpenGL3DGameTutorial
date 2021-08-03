@@ -6,8 +6,32 @@ import org.lwjgl.util.vector.Vector3f
 import org.lwjgl.util.vector.Vector2f
 
 /**
- * Functions to calculate Model, View, and Projection matrices.
+ * Functions to calculate Projection, Transformation, and View matrices.
  */
+
+/**
+ * Create a matrix for the window dimensions.
+ * @param fov the angle between the upper and lower sides of the viewing frustum
+ * @param aspectRatio the aspect ratio of the viewing window
+ * @param zNear the distance to the near clipping plane along the -Z axis
+ * @param zFar the distance to the far clipping plane along the -Z axis
+ * @return the perspective transformation matrix
+ */
+fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4f {
+    val projectionMatrix = Matrix4f()
+    val yScale = (cot(Math.toRadians((fov / 2f).toDouble()))).toFloat()
+    val xScale = yScale / aspectRatio
+    val frustumLength = zFar - zNear
+
+    projectionMatrix.m00 = xScale
+    projectionMatrix.m11 = yScale
+    projectionMatrix.m22 = -((zFar + zNear) / frustumLength)
+    projectionMatrix.m23 = -1f
+    projectionMatrix.m32 = -((2 * zNear * zFar) / frustumLength)
+    projectionMatrix.m33 = 0f
+
+    return projectionMatrix
+}
 
 /**
  * Create a matrix for the GUI.
@@ -15,7 +39,7 @@ import org.lwjgl.util.vector.Vector2f
  * @param scale the size of the GUI element
  * @return the 2D model transformation matrix
  */
-fun createModelMatrix(translation: Vector2f, scale: Vector2f): Matrix4f {
+fun createTransformationMatrix(translation: Vector2f, scale: Vector2f): Matrix4f {
     val matrix = Matrix4f()
 
     Matrix4f.translate(translation, matrix, matrix)
@@ -33,7 +57,7 @@ fun createModelMatrix(translation: Vector2f, scale: Vector2f): Matrix4f {
  * @param scale the size of the 3D object
  * @return the 3D model transformation matrix
  */
-fun createModelMatrix(
+fun createTransformationMatrix(
     translation: Vector3f,
     rx: Float,
     ry: Float,
@@ -66,30 +90,6 @@ fun createModelMatrix(
     Matrix4f.scale(Vector3f(scale, scale, scale), matrix, matrix)
 
     return matrix
-}
-
-/**
- * Create a matrix for the window dimensions.
- * @param fov the angle between the upper and lower sides of the viewing frustum
- * @param aspectRatio the aspect ratio of the viewing window
- * @param zNear the distance to the near clipping plane along the -Z axis
- * @param zFar the distance to the far clipping plane along the -Z axis
- * @return the perspective transformation matrix
- */
-fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4f {
-    val projectionMatrix = Matrix4f()
-    val yScale = (cot(Math.toRadians((fov / 2f).toDouble()))).toFloat()
-    val xScale = yScale / aspectRatio
-    val frustumLength = zFar - zNear
-
-    projectionMatrix.m00 = xScale
-    projectionMatrix.m11 = yScale
-    projectionMatrix.m22 = -((zFar + zNear) / frustumLength)
-    projectionMatrix.m23 = -1f
-    projectionMatrix.m32 = -((2 * zNear * zFar) / frustumLength)
-    projectionMatrix.m33 = 0f
-
-    return projectionMatrix
 }
 
 /**

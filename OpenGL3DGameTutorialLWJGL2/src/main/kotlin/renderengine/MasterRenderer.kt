@@ -3,6 +3,7 @@ package renderengine
 import entities.Camera
 import entities.Entity
 import entities.Light
+import models.Loader
 import models.TexturedModel
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.vector.Matrix4f
