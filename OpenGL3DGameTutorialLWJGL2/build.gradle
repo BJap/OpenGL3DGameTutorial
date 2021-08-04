@@ -35,7 +35,7 @@ configurations {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.lwjgl.lwjgl:lwjgl:${lwjglVersion}"
     implementation "org.lwjgl.lwjgl:lwjgl_util:${lwjglVersion}"
 }
