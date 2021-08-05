@@ -11,18 +11,18 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var locationAttenuation = IntArray(MAX_LIGHTS)
     private var locationLightColor = IntArray(MAX_LIGHTS)
     private var locationLightPosition = IntArray(MAX_LIGHTS)
-    private var locationModelMatrix = -1
     private var locationNumberOfRows = -1
     private var locationOffset = -1
     private var locationProjectionMatrix = -1
     private var locationReflectivity = -1
     private var locationShineDamper = -1
     private var locationSkyColor = -1
+    private var locationTransformationMatrix = -1
     private var locationUseFakeLighting = -1
     private var locationViewMatrix = -1
 
     init {
-        load()
+        prime()
     }
 
     fun loadFakeLightingVariable(useFakeLighting: Boolean) {
@@ -41,10 +41,6 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
                 loadVector3D(locationLightColor[i], Vector3f(0f, 0f, 0f))
             }
         }
-    }
-
-    fun loadModelMatrix(transformation: Matrix4f) {
-        loadMatrix(locationModelMatrix, transformation)
     }
 
     fun loadNumberOfRows(numberOfRows: Int) {
@@ -68,6 +64,10 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector3D(locationSkyColor, Vector3f(r, g, b))
     }
 
+    fun loadTransformationMatrix(transformation: Matrix4f) {
+        loadMatrix(locationTransformationMatrix, transformation)
+    }
+
     fun loadViewMatrix(camera: Camera) {
         val viewMatrix = createViewMatrix(camera)
 
@@ -81,13 +81,13 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     override fun getAllUniformLocations() {
-        locationModelMatrix = getUniformLocation("modelMatrix")
         locationNumberOfRows = getUniformLocation("numberOfRows")
         locationOffset = getUniformLocation("offset")
         locationProjectionMatrix = getUniformLocation("projectionMatrix")
         locationReflectivity = getUniformLocation("reflectivity")
         locationShineDamper = getUniformLocation("shineDamper")
         locationSkyColor = getUniformLocation("skyColor")
+        locationTransformationMatrix = getUniformLocation("transformationMatrix")
         locationUseFakeLighting = getUniformLocation("useFakeLighting")
         locationViewMatrix = getUniformLocation("viewMatrix")
 

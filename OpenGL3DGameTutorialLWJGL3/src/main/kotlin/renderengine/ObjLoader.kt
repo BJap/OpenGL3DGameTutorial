@@ -2,6 +2,7 @@ package renderengine
 
 import geometry.Vector2D
 import geometry.Vector3D
+import models.Loader
 import models.RawModel
 import java.io.BufferedReader
 import java.io.File
@@ -18,9 +19,7 @@ class ObjLoader {
             try {
                 fileReader = FileReader(File(path))
             } catch (e: FileNotFoundException) {
-                System.err.println("Couldn't load file!")
-
-                e.printStackTrace()
+                System.err.println("Couldn't load file\n${e.stackTraceToString()}")
 
                 exitProcess(-1)
             }

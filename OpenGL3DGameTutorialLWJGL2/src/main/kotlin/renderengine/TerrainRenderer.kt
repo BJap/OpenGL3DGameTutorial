@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Matrix4f
 import org.lwjgl.util.vector.Vector3f
 import shaders.TerrainShader
 import terrains.Terrain
-import util.createModelMatrix
+import util.createTransformationMatrix
 
 class TerrainRenderer(private val terrainShader: TerrainShader, projectionMatrix: Matrix4f) {
     init {
@@ -21,7 +21,7 @@ class TerrainRenderer(private val terrainShader: TerrainShader, projectionMatrix
     fun render(terrains: List<Terrain>) {
         terrains.forEach { terrain ->
             prepareTerrain(terrain)
-            loadModelMatrix(terrain)
+            loadTransformationMatrix(terrain)
 
             GL11.glDrawElements(
                 GL11.GL_TRIANGLES,
@@ -49,8 +49,8 @@ class TerrainRenderer(private val terrainShader: TerrainShader, projectionMatrix
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.blendMap.textureId)
     }
 
-    private fun loadModelMatrix(terrain: Terrain) {
-        val modelMatrix = createModelMatrix(
+    private fun loadTransformationMatrix(terrain: Terrain) {
+        val transformationMatrix = createTransformationMatrix(
             Vector3f(terrain.x, 0f, terrain.z),
             0f,
             0f,
@@ -58,7 +58,7 @@ class TerrainRenderer(private val terrainShader: TerrainShader, projectionMatrix
             1f
         )
 
-        terrainShader.loadModelMatrix(modelMatrix)
+        terrainShader.loadTransformationMatrix(transformationMatrix)
     }
 
     private fun prepareTerrain(terrain: Terrain) {

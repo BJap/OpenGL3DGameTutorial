@@ -6,8 +6,20 @@ import geometry.Vector2D
 import geometry.Vector3D
 
 /**
- * Functions to calculate Model, View, and Projection matrices.
+ * Functions to calculate Projection, Transformation, and View matrices.
  */
+
+/**
+ * Create a matrix for the window dimensions.
+ * @param fov the angle between the upper and lower sides of the viewing frustum
+ * @param aspectRatio the aspect ratio of the viewing window
+ * @param zNear the distance to the near clipping plane along the -Z axis
+ * @param zFar the distance to the far clipping plane along the -Z axis
+ * @return the perspective transformation matrix
+ */
+fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4D {
+   return Matrix4D().perspective(fov, aspectRatio, zNear, zFar)
+}
 
 /**
  * Create a matrix for the GUI.
@@ -15,7 +27,7 @@ import geometry.Vector3D
  * @param scale the size of the GUI element
  * @return the 2D model transformation matrix
  */
-fun createModelMatrix(translation: Vector2D, scale: Vector2D): Matrix4D {
+fun createTransformationMatrix(translation: Vector2D, scale: Vector2D): Matrix4D {
     return Matrix4D()
         .translate(Vector3D(translation.x, translation.y, 1f))
         .scale(Vector3D(scale.x, scale.y, 1f))
@@ -30,7 +42,7 @@ fun createModelMatrix(translation: Vector2D, scale: Vector2D): Matrix4D {
  * @param scale the size of the 3D object
  * @return the 3D model transformation matrix
  */
-fun createModelMatrix(
+fun createTransformationMatrix(
     translation: Vector3D,
     rx: Float,
     ry: Float,
@@ -43,18 +55,6 @@ fun createModelMatrix(
         .rotateY(Math.toRadians(ry.toDouble()).toFloat())
         .rotateZ(Math.toRadians(rz.toDouble()).toFloat())
         .scale(scale)
-}
-
-/**
- * Create a matrix for the window dimensions.
- * @param fov the angle between the upper and lower sides of the viewing frustum
- * @param aspectRatio the aspect ratio of the viewing window
- * @param zNear the distance to the near clipping plane along the -Z axis
- * @param zFar the distance to the far clipping plane along the -Z axis
- * @return the perspective transformation matrix
- */
-fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4D {
-   return Matrix4D().perspective(fov, aspectRatio, zNear, zFar)
 }
 
 /**

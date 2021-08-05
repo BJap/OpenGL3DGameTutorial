@@ -3,14 +3,14 @@ package shaders
 import geometry.Matrix4D
 
 class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
-    private var locationModelMatrix = -1
+    private var locationTransformationMatrix = -1
 
     init {
-        load()
+        prime()
     }
 
-    fun loadModelMatrix(transformation: Matrix4D) {
-        loadMatrix(locationModelMatrix, transformation)
+    fun loadTransformationMatrix(transformation: Matrix4D) {
+        loadMatrix(locationTransformationMatrix, transformation)
     }
 
     override fun bindAttributes() {
@@ -18,7 +18,7 @@ class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     override fun getAllUniformLocations() {
-        locationModelMatrix = getUniformLocation("modelMatrix")
+        locationTransformationMatrix = getUniformLocation("transformationMatrix")
     }
 
     companion object {

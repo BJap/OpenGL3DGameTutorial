@@ -32,8 +32,9 @@ class MousePicker(private val camera: Camera, private val projectionMatrix: Matr
     }
 
     private fun getNormalizedDeviceCoordinates(mouseX: Float, mouseY: Float): Vector2f {
-        val x = (2f * mouseX) / WindowManager.windowWidth - 1f
-        val y = (2f * mouseY) / WindowManager.windowHeight - 1f
+        val dimension = WindowManager.windowDimension
+        val x = (2f * mouseX) / dimension.width - 1f
+        val y = (2f * mouseY) / dimension.height - 1f
 
         return Vector2f(x, y)
     }

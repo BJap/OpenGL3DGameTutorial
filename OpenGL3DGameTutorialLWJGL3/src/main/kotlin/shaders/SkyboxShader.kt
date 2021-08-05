@@ -17,7 +17,7 @@ class SkyboxShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var rotation = 0f
 
     init {
-        load()
+        prime()
     }
 
     fun connectTextureUnits() {

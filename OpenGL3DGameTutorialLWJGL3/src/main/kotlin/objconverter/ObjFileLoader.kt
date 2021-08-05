@@ -2,8 +2,8 @@ package objconverter
 
 import geometry.Vector2D
 import geometry.Vector3D
+import models.Loader
 import models.RawModel
-import renderengine.Loader
 import java.io.*
 import java.util.*
 import kotlin.system.exitProcess
@@ -16,9 +16,7 @@ class ObjFileLoader {
             try {
                 fileReader = FileReader(File(path))
             } catch (e: FileNotFoundException) {
-                System.err.println("Couldn't load file!")
-
-                e.printStackTrace()
+                System.err.println("Couldn't load file\n${e.stackTraceToString()}")
 
                 exitProcess(-1)
             }

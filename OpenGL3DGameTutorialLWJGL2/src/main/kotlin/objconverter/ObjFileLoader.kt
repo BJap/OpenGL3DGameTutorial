@@ -1,9 +1,9 @@
 package objconverter
 
+import models.Loader
 import models.RawModel
 import org.lwjgl.util.vector.Vector2f
 import org.lwjgl.util.vector.Vector3f
-import renderengine.Loader
 import java.io.*
 import java.util.*
 import kotlin.system.exitProcess

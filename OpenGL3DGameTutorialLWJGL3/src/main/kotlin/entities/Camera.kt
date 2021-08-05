@@ -3,7 +3,6 @@ package entities
 import geometry.Vector3D
 import input.Mouse
 import org.lwjgl.glfw.GLFW
-import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
 

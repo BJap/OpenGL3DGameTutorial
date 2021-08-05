@@ -4,6 +4,7 @@ import entities.Camera
 import entities.Entity
 import entities.Light
 import geometry.Matrix4D
+import models.Loader
 import models.TexturedModel
 import org.lwjgl.opengl.GL11
 import shaders.StaticShader

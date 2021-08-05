@@ -2,13 +2,14 @@ package terrains
 
 import geometry.Vector2D
 import geometry.Vector3D
+import models.Loader
 import models.RawModel
-import renderengine.Loader
 import textures.TerrainTexture
 import textures.TerrainTexturePack
 import util.getHeightFromBarycentricCoordinates
 import java.awt.image.BufferedImage
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.IOException
 import javax.imageio.ImageIO
 import kotlin.math.floor
@@ -76,10 +77,12 @@ class Terrain(
 
         try {
             heightMapImage = ImageIO.read(FileInputStream(heightMapPath))
-        } catch (e: IOException) {
-            System.err.println("Could not read file!")
+        } catch (e: FileNotFoundException) {
+            System.err.println("Height map image file does not exist\n${e.stackTraceToString()}")
 
-            e.printStackTrace()
+            exitProcess(-1)
+        } catch (e: IOException) {
+            System.err.println("Could not read height map image file\n${e.stackTraceToString()}")
 
             exitProcess(-1)
         }

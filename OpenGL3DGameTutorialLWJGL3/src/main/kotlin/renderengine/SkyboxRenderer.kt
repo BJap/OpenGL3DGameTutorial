@@ -2,6 +2,7 @@ package renderengine
 
 import entities.Camera
 import geometry.Matrix4D
+import models.Loader
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL13
 import org.lwjgl.opengl.GL20

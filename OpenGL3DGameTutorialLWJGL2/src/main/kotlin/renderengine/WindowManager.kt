@@ -1,7 +1,11 @@
 package renderengine
 
 import org.lwjgl.Sys
-import org.lwjgl.opengl.*
+import org.lwjgl.opengl.ContextAttribs
+import org.lwjgl.opengl.Display
+import org.lwjgl.opengl.DisplayMode
+import org.lwjgl.opengl.PixelFormat
+import java.awt.Dimension
 import kotlin.system.exitProcess
 
 class WindowManager {
@@ -10,9 +14,17 @@ class WindowManager {
         private const val HEIGHT = 720
         private const val FPS_CAP = 120
 
-        val windowWidth get() = Display.getWidth()
-        val windowHeight get() = Display.getHeight()
-        val aspectRatio get() = windowWidth.toFloat() / windowHeight.toFloat()
+        val windowDimension: Dimension get() {
+            val w = Display.getWidth()
+            val h = Display.getHeight()
+
+            return Dimension(w, h)
+        }
+        val aspectRatio: Float get() {
+            val dimension = windowDimension
+
+            return dimension.width.toFloat() / dimension.height.toFloat()
+        }
         val shouldCloseDisplay get() = Display.isCloseRequested()
         val frameTimeSeconds get() = delta
 

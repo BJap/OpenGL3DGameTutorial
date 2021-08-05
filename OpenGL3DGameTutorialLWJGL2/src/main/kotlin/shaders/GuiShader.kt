@@ -3,14 +3,14 @@ package shaders
 import org.lwjgl.util.vector.Matrix4f
 
 class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
-    private var locationModelMatrix = 1
+    private var locationTransformationMatrix = 1
 
     init {
-        load()
+        prime()
     }
 
-    fun loadModelMatrix(transformation: Matrix4f) {
-        loadMatrix(locationModelMatrix, transformation)
+    fun loadTransformationMatrix(transformation: Matrix4f) {
+        loadMatrix(locationTransformationMatrix, transformation)
     }
 
     override fun bindAttributes() {
@@ -18,7 +18,7 @@ class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     override fun getAllUniformLocations() {
-        locationModelMatrix = getUniformLocation("modelMatrix")
+        locationTransformationMatrix = getUniformLocation("transformationMatrix")
     }
 
     companion object {
