@@ -36,33 +36,33 @@ fun main() {
     val terrain = Terrain(0f, -1f, terrainTexturePack, blendMap, loader, heightMapPath)
 
     val lowPolyTreeModel = ObjLoader.loadObjModel("src/main/resources/models/lowPolyTree.obj", loader)
-    val lowPolyTreeTexture = loader.load2DTexture("src/main/resources/textures/lowPolyTree.png")
-    val texturedLowPolyTreeModel = TexturedModel(lowPolyTreeModel, ModelTexture(lowPolyTreeTexture))
+    val lowPolyTreeTextureId = loader.load2DTexture("src/main/resources/textures/lowPolyTree.png")
+    val texturedLowPolyTreeModel = TexturedModel(lowPolyTreeModel, ModelTexture(lowPolyTreeTextureId))
 
     val treeModel = ObjLoader.loadObjModel("src/main/resources/models/tree.obj", loader)
-    val treeTexture = loader.load2DTexture("src/main/resources/textures/tree.png")
-    val texturedTreeModel = TexturedModel(treeModel, ModelTexture(treeTexture))
+    val treeTextureId = loader.load2DTexture("src/main/resources/textures/tree.png")
+    val texturedTreeModel = TexturedModel(treeModel, ModelTexture(treeTextureId))
 
     val lampModel = ObjLoader.loadObjModel("src/main/resources/models/lamp.obj", loader)
-    val lampTexture = loader.load2DTexture("src/main/resources/textures/lamp.png")
-    val texturedLampModel = TexturedModel(lampModel, ModelTexture(lampTexture))
+    val lampTextureId = loader.load2DTexture("src/main/resources/textures/lamp.png")
+    val texturedLampModel = TexturedModel(lampModel, ModelTexture(lampTextureId))
     texturedLampModel.modelTexture.useFakeLighting = true
 
     val grassModel = ObjLoader.loadObjModel("src/main/resources/models/grassModel.obj", loader)
-    val grassTexture = loader.load2DTexture("src/main/resources/textures/grassTexture.png")
-    val texturedGrassModel = TexturedModel(grassModel, ModelTexture(grassTexture))
+    val grassTextureId = loader.load2DTexture("src/main/resources/textures/grassTexture.png")
+    val texturedGrassModel = TexturedModel(grassModel, ModelTexture(grassTextureId))
     texturedGrassModel.modelTexture.hasTransparency = true
     texturedGrassModel.modelTexture.useFakeLighting = true
 
     val flowerModel = ObjLoader.loadObjModel("src/main/resources/models/grassModel.obj", loader)
-    val flowerTexture = loader.load2DTexture("src/main/resources/textures/flower.png")
-    val texturedFlowerModel = TexturedModel(flowerModel, ModelTexture(flowerTexture))
+    val flowerTextureId = loader.load2DTexture("src/main/resources/textures/flower.png")
+    val texturedFlowerModel = TexturedModel(flowerModel, ModelTexture(flowerTextureId))
     texturedFlowerModel.modelTexture.hasTransparency = true
     texturedFlowerModel.modelTexture.useFakeLighting = true
 
     val fernModel = ObjLoader.loadObjModel("src/main/resources/models/fern.obj", loader)
-    val fernTexture = loader.load2DTexture("src/main/resources/textures/fern.png")
-    val fernModelTexture = ModelTexture(fernTexture)
+    val fernTextureId = loader.load2DTexture("src/main/resources/textures/fern.png")
+    val fernModelTexture = ModelTexture(fernTextureId)
     fernModelTexture.numberOfRows = 2
     val texturedFernModel = TexturedModel(fernModel, fernModelTexture)
     texturedFernModel.modelTexture.hasTransparency = true
@@ -154,14 +154,14 @@ fun main() {
     entities.add(Entity(texturedLampModel, Vector3D(293f, -6.8f, -305f), 0f, 0f, 0f, 1f))
 
     val playerModel = ObjLoader.loadObjModel("src/main/resources/models/person.obj", loader)
-    val playerTexture = loader.load2DTexture("src/main/resources/textures/playerTexture.png")
-    val texturedPlayerModel = TexturedModel(playerModel, ModelTexture(playerTexture))
+    val playerTextureId = loader.load2DTexture("src/main/resources/textures/playerTexture.png")
+    val texturedPlayerModel = TexturedModel(playerModel, ModelTexture(playerTextureId))
     val player = Player(texturedPlayerModel, Vector3D(400f, 5f, -150f), 0f, 180f, 0f, 0.3f)
 
     entities.add(player)
 
-    val healthTexture = loader.load2DTexture("src/main/resources/textures/health.png")
-    val healthGuiTexture = GuiTexture(healthTexture, Vector2D(-0.6f, -0.8f), Vector2D(0.3f, 0.4f))
+    val healthTextureId = loader.load2DTexture("src/main/resources/textures/health.png")
+    val healthGuiTexture = GuiTexture(healthTextureId, Vector2D(-0.6f, -0.8f), Vector2D(0.3f, 0.4f))
 
     val guis = ArrayList<GuiTexture>()
     guis.add(healthGuiTexture)

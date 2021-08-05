@@ -5,6 +5,7 @@ import org.lwjgl.glfw.Callbacks
 import org.lwjgl.glfw.GLFW
 import org.lwjgl.glfw.GLFWErrorCallback
 import org.lwjgl.opengl.GL
+import java.awt.Dimension
 import kotlin.system.exitProcess
 
 class WindowManager {
@@ -15,17 +16,19 @@ class WindowManager {
         var window = 0L
             private set
 
-        val windowWidth: Int get() {
+        val windowDimension: Dimension get() {
             val w = BufferUtils.createIntBuffer(1)
-            GLFW.glfwGetWindowSize(window, w, null)
-            return w.get()
-        }
-        val windowHeight: Int get() {
             val h = BufferUtils.createIntBuffer(1)
-            GLFW.glfwGetWindowSize(window, null, h)
-            return h.get()
+
+            GLFW.glfwGetWindowSize(window, w, h)
+
+            return Dimension(w.get(), h.get())
         }
-        val aspectRatio get() = windowWidth.toFloat() / windowHeight.toFloat()
+        val aspectRatio: Float get() {
+            val dimension = windowDimension
+
+            return dimension.width.toFloat() / dimension.height.toFloat()
+        }
         val shouldCloseDisplay get() = GLFW.glfwWindowShouldClose(window)
         val frameTimeSeconds get() = delta
 
@@ -56,6 +59,15 @@ class WindowManager {
             if (window == 0L) {
                 throw RuntimeException("Failed to create the GLFW window")
             }
+
+            val videoMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor())!!
+            val dimension = windowDimension
+
+            GLFW.glfwSetWindowPos(
+                window,
+                (videoMode.width() - dimension.width) / 2,
+                (videoMode.height() - dimension.height) / 2
+            )
 
             GLFW.glfwMakeContextCurrent(window)
             GLFW.glfwSwapInterval(1)

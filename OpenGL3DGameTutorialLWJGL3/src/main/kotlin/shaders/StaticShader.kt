@@ -22,7 +22,7 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var locationViewMatrix = -1
 
     init {
-        load()
+        prime()
     }
 
     fun loadFakeLightingVariable(useFakeLighting: Boolean) {

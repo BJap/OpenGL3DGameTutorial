@@ -6,7 +6,7 @@ class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     private var locationTransformationMatrix = -1
 
     init {
-        load()
+        prime()
     }
 
     fun loadTransformationMatrix(transformation: Matrix4D) {

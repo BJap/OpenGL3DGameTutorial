@@ -17,7 +17,17 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     private var vertexShaderId = loadShader(vertexFilePath, GL20.GL_VERTEX_SHADER)
     private var fragmentShaderId = loadShader(fragmentFilePath, GL20.GL_FRAGMENT_SHADER)
 
-    fun load() {
+    fun cleanUp() {
+        stop()
+
+        GL20.glDetachShader(programId, fragmentShaderId)
+        GL20.glDetachShader(programId, vertexShaderId)
+        GL20.glDeleteShader(fragmentShaderId)
+        GL20.glDeleteShader(vertexShaderId)
+        GL20.glDeleteProgram(programId)
+    }
+
+    fun prime() {
         GL20.glAttachShader(programId, vertexShaderId)
         GL20.glAttachShader(programId, fragmentShaderId)
 
@@ -37,20 +47,10 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
         GL20.glUseProgram(0)
     }
 
-    fun cleanUp() {
-        stop()
-
-        GL20.glDetachShader(programId, fragmentShaderId)
-        GL20.glDetachShader(programId, vertexShaderId)
-        GL20.glDeleteShader(fragmentShaderId)
-        GL20.glDeleteShader(vertexShaderId)
-        GL20.glDeleteProgram(programId)
-    }
-
     protected abstract fun bindAttributes()
 
-    protected fun bindAttribute(attribute: Int, variableName: String) {
-        GL20.glBindAttribLocation(programId, attribute, variableName)
+    protected fun bindAttribute(attributeNumber: Int, variableName: String) {
+        GL20.glBindAttribLocation(programId, attributeNumber, variableName)
     }
 
     protected abstract fun getAllUniformLocations()
@@ -88,17 +88,19 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     }
 
     companion object {
+        private const val MAX_SHADER_LOG_LENGTH = 500
+
         private val matrixBuffer = BufferUtils.createFloatBuffer(16)
 
-        fun loadShader(file: String, type: Int): Int {
+        fun loadShader(path: String, type: Int): Int {
             val shaderSource = StringBuilder()
 
             try {
-                val reader = BufferedReader(FileReader(file))
-                reader.forEachLine { line ->
-                    shaderSource.append(line).append("\n")
+                BufferedReader(FileReader(path)).use { reader ->
+                    reader.forEachLine { line ->
+                        shaderSource.append(line).append("\n")
+                    }
                 }
-                reader.close()
             } catch (e: FileNotFoundException) {
                 System.err.println("Shader file does not exist\n${e.stackTraceToString()}")
 
@@ -115,7 +117,7 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
             GL20.glCompileShader(shaderId)
 
             if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-                println(GL20.glGetShaderInfoLog(shaderId, 500))
+                println(GL20.glGetShaderInfoLog(shaderId, MAX_SHADER_LOG_LENGTH))
                 System.err.println("Could not compile shader.")
 
                 exitProcess(-1)
