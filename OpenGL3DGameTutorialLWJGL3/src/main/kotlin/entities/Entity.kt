@@ -3,24 +3,34 @@ package entities
 import geometry.Vector3D
 import models.TexturedModel
 
+/**
+ * Contains all the data needed to draw an entity.
+ * @param texturedModel the model and texture that represent an entity
+ * @param position the starting position of the entity
+ * @param rotX the starting rotation on the x-axis for the entity
+ * @param rotY the starting rotation on the y-axis for the entity
+ * @param rotZ the starting rotation on the z-axis for the entity
+ * @param scale the starting scale of the entity
+ * @param textureIndex the location of the entity texture in memory
+ */
 open class Entity(
     val texturedModel: TexturedModel,
-    _position: Vector3D,
-    _rotX: Float,
-    _rotY: Float,
-    _rotZ: Float,
-    _scale: Float,
+    position: Vector3D,
+    rotX: Float,
+    rotY: Float,
+    rotZ: Float,
+    scale: Float,
     private val textureIndex: Int = 0
 ) {
-    var position = _position
+    private val _position = position
+    val position: Vector3D get() = Vector3D(_position.x, _position.y, _position.z)
+    var rotX = rotX
         private set
-    var rotX = _rotX
+    var rotY = rotY
         private set
-    var rotY = _rotY
+    var rotZ = rotZ
         private set
-    var rotZ = _rotZ
-        private set
-    var scale = _scale
+    var scale = scale
         private set
 
     val textureXOffset: Float get() {
@@ -35,15 +45,27 @@ open class Entity(
         return row.toFloat() / texturedModel.modelTexture.numberOfRows.toFloat()
     }
 
-    fun increasePosition(dx: Float, dy: Float, dz: Float) {
-        position.x += dx
-        position.y += dy
-        position.z += dz
-    }
-
-    fun increaseRotation(rx: Float, ry: Float, rz: Float) {
+    /**
+     * Changes the entity's rotation position around the axes.
+     * @param rx the change (in degrees) in rotation around the x-axis
+     * @param ry the change (in degrees) in rotation around the y-axis
+     * @param rz the change (in degrees) in rotation around the z-axis
+     */
+    fun rotate(rx: Float, ry: Float, rz: Float) {
         rotX += rx
         rotY += ry
         rotZ += rz
+    }
+
+    /**
+     * Changes the entity's position data.
+     * @param dx the change in position along the x-axis
+     * @param dy the change in position along the y-axis
+     * @param dz the change in position along the z-axis
+     */
+    fun translate(dx: Float, dy: Float, dz: Float) {
+        _position.x += dx
+        _position.y += dy
+        _position.z += dz
     }
 }

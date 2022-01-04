@@ -15,8 +15,13 @@ import util.createProjectionMatrix
 class MasterRenderer(loader: Loader) {
     val projectionMatrix: Matrix4D
 
+    // Enables detailing for each rendered entity.
     private val staticShader = StaticShader()
+
+    // Renders all the entities.
     private val entityRenderer: EntityRenderer
+
+    // The entities to be rendered.
     private val entities = HashMap<TexturedModel, ArrayList<Entity>>()
 
     private val terrainShader = TerrainShader()
@@ -35,11 +40,18 @@ class MasterRenderer(loader: Loader) {
         skyboxRenderer = SkyboxRenderer(loader, projectionMatrix)
     }
 
+    /**
+     * Clears out all the shaders.
+     */
     fun cleanUp() {
         staticShader.cleanUp()
         terrainShader.cleanUp()
     }
 
+    /**
+     * Adds the entity to those to be rendered.
+     * @param entity an entity to add
+     */
     fun processEntity(entity: Entity) {
         val texturedModel = entity.texturedModel
         var batch = entities[texturedModel]
@@ -98,6 +110,9 @@ class MasterRenderer(loader: Loader) {
         render(lights, camera)
     }
 
+    /**
+     * Wipes the window clean for the next render.
+     */
     private fun prepare() {
         GL11.glEnable(GL11.GL_DEPTH_TEST)
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
@@ -109,6 +124,7 @@ class MasterRenderer(loader: Loader) {
         private const val Z_NEAR = 0.1f
         private const val Z_FAR = 1000f
 
+        // The RGB values to paint in the window between each frame render.
         private const val RED = 0.5444f
         private const val GREEN = 0.62f
         private const val BLUE = 0.69f

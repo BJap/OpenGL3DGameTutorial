@@ -1,43 +1,41 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
 group 'com.bobbyjap'
 version '1.0-SNAPSHOT'
 
+def kotlinVersion = '1.6.10'
 def lwjglVersion = '2.9.3'
 
+def lwjglNatives
 switch (OperatingSystem.current()) {
     case OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "linux"
+        lwjglNatives = "linux"
         break
     case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "macosx"
+        lwjglNatives = "macosx"
         break
     case OperatingSystem.SOLARIS:
-        project.ext.lwjglNatives = "solaris"
+        lwjglNatives = "solaris"
         break
     case OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = "windows"
+        lwjglNatives = "windows"
         break
     default:
         throw new GradleException('Current operating system not supported')
 }
 
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    extraLibs
-}
-
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "org.lwjgl.lwjgl:lwjgl:${lwjglVersion}"
     implementation "org.lwjgl.lwjgl:lwjgl_util:${lwjglVersion}"
+}
+
+repositories {
+    mavenCentral()
 }
 
 task execute(type: JavaExec) {

@@ -72,6 +72,10 @@ data class Matrix4D(
         return this
     }
 
+    /**
+     * Modifies the matrix to perform a rotation along the x-axis.
+     * @param angle the angle (in radians) for the rotation
+     */
     fun rotateX(angle: Float): Matrix4D {
         if (angle == 0f) {
             return this
@@ -97,6 +101,10 @@ data class Matrix4D(
         return this
     }
 
+    /**
+     * Modifies the matrix to perform a rotation along the y-axis.
+     * @param angle the angle (in radians) for the rotation
+     */
     fun rotateY(angle: Float): Matrix4D {
         if (angle == 0f) {
             return this
@@ -122,6 +130,10 @@ data class Matrix4D(
         return this
     }
 
+    /**
+     * Modifies the matrix to perform a rotation along the z-axis.
+     * @param angle the angle (in radians) for the rotation
+     */
     fun rotateZ(angle: Float): Matrix4D {
         if (angle == 0f) {
             return this
@@ -147,6 +159,10 @@ data class Matrix4D(
         return this
     }
 
+    /**
+     * Modifies the matrix to perform a scale.
+     * @param scale the change in size
+     */
     fun scale(scale: Float): Matrix4D {
         m00 *= scale
         m01 *= scale
@@ -181,6 +197,10 @@ data class Matrix4D(
         return this
     }
 
+    /**
+     * Stores the contents of this matrix in a `FloatBuffer`.
+     * @param floatBuffer the buffer into which to copy the matrix values
+     */
     fun store(floatBuffer: FloatBuffer): Matrix4D {
         floatBuffer.put(m00)
         floatBuffer.put(m01)
@@ -198,11 +218,14 @@ data class Matrix4D(
         floatBuffer.put(m31)
         floatBuffer.put(m32)
         floatBuffer.put(m33)
-        floatBuffer.flip()
 
         return this
     }
 
+    /**
+     * Modifies the matrix to perform a translation.
+     * @param offset the change in position
+     */
     fun translate(offset: Vector3D): Matrix4D {
         m30 += m00 * offset.x + m10 * offset.y + m20 * offset.z
         m31 += m01 * offset.x + m11 * offset.y + m21 * offset.z

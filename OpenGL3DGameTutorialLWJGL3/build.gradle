@@ -1,41 +1,35 @@
 import org.gradle.internal.os.OperatingSystem
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.5.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
 group 'com.bobbyjap'
 version '1.0-SNAPSHOT'
 
-def lwjglVersion = '3.2.3'
+def kotlinVersion = '1.6.10'
+def lwjglVersion = '3.3.0'
 
-switch (OperatingSystem.current()) {
-    case OperatingSystem.LINUX:
-        def osArch = System.getProperty("os.arch")
-        project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
-                ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
-                : "natives-linux"
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos"
-        break
-    case OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = System.getProperty("os.arch").contains("64") ? "natives-windows" : "natives-windows-x86"
-        break
-}
-
-repositories {
-    mavenCentral()
-}
-
-configurations {
-    extraLibs
+def os = OperatingSystem.current()
+def osArch = System.getProperty("os.arch")
+def lwjglNatives
+if (os.isLinux()) {
+    lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+            ? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+            : "natives-linux"
+} else if (os.isMacOsX()) {
+    lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+            ? "natives-macos-arm64" : "natives-macos"
+} else if (os.isWindows()) {
+    lwjglNatives = osArch.contains("64") ? "natives-windows" : "natives-windows-x86"
+} else {
+    throw new UnknownConfigurationException("Operating System " + os.getName() + " is not supported")
 }
 
 dependencies {
     implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "org.lwjgl:lwjgl:$lwjglVersion"
     implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
     implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
@@ -45,12 +39,15 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
 }
 
+repositories {
+    mavenCentral()
+}
+
 task execute(type: JavaExec) {
     classpath(sourceSets.main.runtimeClasspath)
-    
-    if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
+    main('enginetester.MainGameLoopKt')
+
+    if (os.isMacOsX()) {
         jvmArgs '-XstartOnFirstThread'
     }
-    
-    main('enginetester.MainGameLoopKt')
 }

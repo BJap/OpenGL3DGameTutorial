@@ -13,7 +13,7 @@ import org.lwjgl.util.vector.Vector3f
  * @param p2 the second coordinate for the calculation
  * @param p3 the third coordinate for the calculation
  * @param pos the position for which to calculate the height
- * @return the height on the y axis for the given position
+ * @return the height on the y-axis for the given position
  */
 fun getHeightFromBarycentricCoordinates(
     p1: Vector3f,

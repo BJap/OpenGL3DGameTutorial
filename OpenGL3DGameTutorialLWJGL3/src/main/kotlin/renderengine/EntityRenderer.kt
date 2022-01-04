@@ -10,6 +10,11 @@ import org.lwjgl.opengl.GL30
 import shaders.StaticShader
 import util.createTransformationMatrix
 
+/**
+ * A renderer for various types of entities.
+ * @param staticShader the shader program used specifically for entities
+ * @param projectionMatrix the window through which to render the entities within
+ */
 class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: Matrix4D) {
     init {
         staticShader.start()
@@ -17,6 +22,10 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
         staticShader.stop()
     }
 
+    /**
+     * Renders the provided entities.
+     * @param entities what to render and all the places to render it
+     */
     fun render(entities: Map<TexturedModel, List<Entity>>) {
         entities.keys.forEach { texturedModel ->
             prepareTexturedModel(texturedModel)
@@ -38,6 +47,10 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
         }
     }
 
+    /**
+     * Binds the entity rendering information to the program.
+     * @param entity the container for position, rotation, and scale
+     */
     private fun prepareInstance(entity: Entity) {
         val transformationMatrix = createTransformationMatrix(
             entity.position,
@@ -51,6 +64,10 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
         staticShader.loadOffset(entity.textureXOffset, entity.textureYOffset)
     }
 
+    /**
+     * Loads the textured model from memory.
+     * @param texturedModel the locators for the textured model data
+     */
     private fun prepareTexturedModel(texturedModel: TexturedModel) {
         val rawModel = texturedModel.rawModel
 
@@ -74,6 +91,9 @@ class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: M
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, modelTexture.textureId)
     }
 
+    /**
+     * Unloads the textured model.
+     */
     private fun unbindTexturedModel() {
         MasterRenderer.enableCulling()
 

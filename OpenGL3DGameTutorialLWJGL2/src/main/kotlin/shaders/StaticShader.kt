@@ -7,7 +7,11 @@ import org.lwjgl.util.vector.Vector2f
 import org.lwjgl.util.vector.Vector3f
 import util.createViewMatrix
 
+/**
+ * The shader to be used for entities.
+ */
 class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
+    // The location of all the uniforms for the shader.
     private var locationAttenuation = IntArray(MAX_LIGHTS)
     private var locationLightColor = IntArray(MAX_LIGHTS)
     private var locationLightPosition = IntArray(MAX_LIGHTS)
@@ -64,6 +68,9 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector3D(locationSkyColor, Vector3f(r, g, b))
     }
 
+    /**
+     * Load the transformation matrix for the current entity into the program.
+     */
     fun loadTransformationMatrix(transformation: Matrix4f) {
         loadMatrix(locationTransformationMatrix, transformation)
     }
@@ -101,6 +108,7 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     companion object {
         private const val MAX_LIGHTS = 4
 
+        // The locations of the static shaders.
         private const val FRAGMENT_FILE_PATH = "src/main/resources/shaders/staticFragmentShader.fs"
         private const val VERTEX_FILE_PATH = "src/main/resources/shaders/staticVertexShader.vs"
     }

@@ -25,7 +25,7 @@ class Player(
     fun move(terrain: Terrain) {
         checkInputs()
 
-        increaseRotation(0f, currentTurnSpeed * WindowManager.frameTimeSeconds, 0f)
+        rotate(0f, currentTurnSpeed * WindowManager.frameTimeSeconds, 0f)
 
         val distance = currentRunSpeed * WindowManager.frameTimeSeconds
         val dx = distance * sin(Math.toRadians(rotY.toDouble())).toFloat()
@@ -33,14 +33,15 @@ class Player(
 
         upwardSpeed += GRAVITY * WindowManager.frameTimeSeconds
 
-        increasePosition(dx, upwardSpeed * WindowManager.frameTimeSeconds, dz)
+        translate(dx, upwardSpeed * WindowManager.frameTimeSeconds, dz)
 
         val terrainHeight = terrain.getHeightOfTerrain(position.x, position.z)
 
         if (position.y < terrainHeight) {
             upwardSpeed = 0f
             isInAir = false
-            position.y = terrainHeight
+
+            translate(0f, terrainHeight - position.y, 0f)
         }
     }
 
