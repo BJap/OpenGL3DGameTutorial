@@ -9,8 +9,12 @@ class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         prime()
     }
 
-    fun loadTransformationMatrix(transformation: Matrix4D) {
-        loadMatrix(locationTransformationMatrix, transformation)
+    /**
+     * Loads the transformation matrix for the static shader into the program.
+     * @param transformationMatrix the transformation matrix for the shader
+     */
+    fun loadTransformationMatrix(transformationMatrix: Matrix4D) {
+        loadMatrix(locationTransformationMatrix, transformationMatrix)
     }
 
     override fun bindAttributes() {
@@ -22,7 +26,7 @@ class GuiShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     companion object {
-        private const val FRAGMENT_FILE_PATH = "src/main/resources/shaders/guiFragmentShader.fs"
-        private const val VERTEX_FILE_PATH = "src/main/resources/shaders/guiVertexShader.vs"
+        private const val FRAGMENT_FILE_PATH = "shaders/guiFragmentShader.frag"
+        private const val VERTEX_FILE_PATH = "shaders/guiVertexShader.vert"
     }
 }

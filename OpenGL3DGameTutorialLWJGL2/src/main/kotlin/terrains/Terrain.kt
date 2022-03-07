@@ -8,12 +8,9 @@ import textures.TerrainTexture
 import textures.TerrainTexturePack
 import util.getHeightFromBarycentricCoordinates
 import java.awt.image.BufferedImage
-import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.io.IOException
 import javax.imageio.ImageIO
 import kotlin.math.floor
-import kotlin.system.exitProcess
 
 class Terrain(
     gridX: Float,
@@ -73,22 +70,9 @@ class Terrain(
     }
 
     private fun generateTerrain(): RawModel {
-        val heightMapImage: BufferedImage
-
-        try {
-            heightMapImage = ImageIO.read(FileInputStream(heightMapPath))
-        } catch (e: FileNotFoundException) {
-            System.err.println("Height map image file does not exist\n${e.stackTraceToString()}")
-
-            exitProcess(-1)
-        } catch (e: IOException) {
-            System.err.println("Could not read height map image file\n${e.stackTraceToString()}")
-
-            e.printStackTrace()
-
-            exitProcess(-1)
-        }
-
+        val imageSource = this::class.java.classLoader.getResource(heightMapPath)
+            ?: throw FileNotFoundException("Image file at path '$heightMapPath' does not exist")
+        val heightMapImage = ImageIO.read(imageSource)
         val vertexCount = heightMapImage.height
 
         heights = Array(vertexCount) { FloatArray(vertexCount) }

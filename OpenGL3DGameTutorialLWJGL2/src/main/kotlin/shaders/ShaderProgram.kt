@@ -14,8 +14,8 @@ import kotlin.system.exitProcess
 
 /**
  * A program to load shaders and apply them during rendering.
- * @param vertexFilePath the location of the vertex shader
- * @param fragmentFilePath the location of the fragment shader
+ * @param vertexFilePath the location of the vertex shader within the resources folder
+ * @param fragmentFilePath the location of the fragment shader within the resources folder
  */
 abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     // The ID for the rendering program used by the graphics hardware.
@@ -89,6 +89,7 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     /**
      * Gets the location of a uniform related to the vertex shader.
      * @param uniformName the name of the uniform to find
+     * @return the location of the uniform variable
      */
     protected fun getUniformLocation(uniformName: String): Int {
         return GL20.glGetUniformLocation(programId, uniformName)
@@ -135,8 +136,9 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
 
         /**
          * Loads a shader into memory.
-         * @param path the location of the shader
+         * @param path the location of the shader within the resources folder
          * @param type the type of shader
+         * @return the id of the new shader
          */
         fun loadShader(path: String, type: Int): Int {
             val shaderSource = StringBuilder()

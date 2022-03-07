@@ -4,25 +4,16 @@ import models.Loader
 import models.RawModel
 import org.lwjgl.util.vector.Vector2f
 import org.lwjgl.util.vector.Vector3f
-import java.io.*
-import java.util.*
-import kotlin.system.exitProcess
+import java.io.BufferedReader
+import java.io.FileNotFoundException
+import java.io.FileReader
 
 class ObjFileLoader {
     companion object {
         fun loadObj(path: String): ModelData {
-            val fileReader: FileReader
-
-            try {
-                fileReader = FileReader(File(path))
-            } catch (e: FileNotFoundException) {
-                System.err.println("Couldn't load file!")
-
-                e.printStackTrace()
-
-                exitProcess(-1)
-            }
-
+            val objectSource = this::class.java.classLoader.getResource(path)
+                ?: throw FileNotFoundException("Object file at path '$path' does not exist")
+            val fileReader = FileReader(objectSource.file)
             val bufferedReader = BufferedReader(fileReader)
 
             val vertices: ArrayList<Vertex> = ArrayList()

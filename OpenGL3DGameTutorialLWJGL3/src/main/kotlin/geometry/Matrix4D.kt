@@ -1,12 +1,11 @@
 package geometry
 
-import util.cot
 import java.nio.FloatBuffer
 import kotlin.math.cos
 import kotlin.math.sin
 
 /**
- * A 4x4 matrix of `Float` values.
+ * A 4x4 matrix of [Float] values (defaults to an identity matrix).
  */
 data class Matrix4D(
     var m00: Float = 1.0f, var m01: Float = 0.0f, var m02: Float = 0.0f, var m03: Float = 0.0f,
@@ -57,24 +56,10 @@ data class Matrix4D(
         return this
     }
 
-    fun perspective(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4D {
-        val yScale = (cot(Math.toRadians((fov / 2f).toDouble()))).toFloat()
-        val xScale = yScale / aspectRatio
-        val frustumLength = zFar - zNear
-
-        m00 = xScale
-        m11 = yScale
-        m22 = -((zFar + zNear) / frustumLength)
-        m23 = -1f
-        m32 = -((2 * zNear * zFar) / frustumLength)
-        m33 = 0f
-
-        return this
-    }
-
     /**
      * Modifies the matrix to perform a rotation along the x-axis.
      * @param angle the angle (in radians) for the rotation
+     * @return a reference to the same matrix object
      */
     fun rotateX(angle: Float): Matrix4D {
         if (angle == 0f) {
@@ -104,6 +89,7 @@ data class Matrix4D(
     /**
      * Modifies the matrix to perform a rotation along the y-axis.
      * @param angle the angle (in radians) for the rotation
+     * @return a reference to the same matrix object
      */
     fun rotateY(angle: Float): Matrix4D {
         if (angle == 0f) {
@@ -133,6 +119,7 @@ data class Matrix4D(
     /**
      * Modifies the matrix to perform a rotation along the z-axis.
      * @param angle the angle (in radians) for the rotation
+     * @return a reference to the same matrix object
      */
     fun rotateZ(angle: Float): Matrix4D {
         if (angle == 0f) {
@@ -162,6 +149,7 @@ data class Matrix4D(
     /**
      * Modifies the matrix to perform a scale.
      * @param scale the change in size
+     * @return a reference to the same matrix object
      */
     fun scale(scale: Float): Matrix4D {
         m00 *= scale
@@ -198,8 +186,9 @@ data class Matrix4D(
     }
 
     /**
-     * Stores the contents of this matrix in a `FloatBuffer`.
+     * Stores the contents of this matrix in a [FloatBuffer].
      * @param floatBuffer the buffer into which to copy the matrix values
+     * @return a reference to the same matrix object
      */
     fun store(floatBuffer: FloatBuffer): Matrix4D {
         floatBuffer.put(m00)
@@ -225,6 +214,7 @@ data class Matrix4D(
     /**
      * Modifies the matrix to perform a translation.
      * @param offset the change in position
+     * @return a reference to the same matrix object
      */
     fun translate(offset: Vector3D): Matrix4D {
         m30 += m00 * offset.x + m10 * offset.y + m20 * offset.z

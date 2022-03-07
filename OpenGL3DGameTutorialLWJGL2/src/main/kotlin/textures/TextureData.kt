@@ -1,35 +1,26 @@
 package textures
 
 import org.lwjgl.BufferUtils
-import java.io.FileInputStream
 import java.io.FileNotFoundException
-import java.io.IOException
 import java.nio.ByteBuffer
 import javax.imageio.ImageIO
-import kotlin.system.exitProcess
 
 data class TextureData(val buffer: ByteBuffer, val width: Int, val height: Int) {
     companion object {
+        /**
+         * Static initializer that generates texture data from the provided image.
+         * @param path the location of the image asset within the resources folder
+         * @return the data for the texture collected from the file as a [TextureData] object
+         */
         fun fromImageFile(path: String): TextureData {
-            val width: Int
-            val height: Int
-            val pixels: IntArray
+            val imageSource = this::class.java.classLoader.getResource(path)
+                ?: throw FileNotFoundException("Image file at path '$path' does not exist")
+            val image = ImageIO.read(imageSource)
+            val width = image.width
+            val height = image.height
+            val pixels = IntArray(width * height)
 
-            try {
-                val image = ImageIO.read(FileInputStream(path))
-                width = image.width
-                height = image.height
-                pixels = IntArray(width * height)
-                image.getRGB(0, 0, width, height, pixels, 0, width)
-            } catch (e: FileNotFoundException) {
-                System.err.println("Image file does not exist\n${e.stackTraceToString()}")
-
-                exitProcess(-1)
-            } catch (e: IOException) {
-                System.err.println("Could not read file\n${e.stackTraceToString()}")
-
-                exitProcess(-1)
-            }
+            image.getRGB(0, 0, width, height, pixels, 0, width)
 
             val buffer = BufferUtils.createByteBuffer(width * height * 4)
 

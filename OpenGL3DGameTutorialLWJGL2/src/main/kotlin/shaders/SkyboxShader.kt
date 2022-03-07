@@ -33,10 +33,18 @@ class SkyboxShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector3D(locationFogColor, Vector3f(r, g, b))
     }
 
-    fun loadProjectionMatrix(projection: Matrix4f) {
-        loadMatrix(locationProjectionMatrix, projection)
+    /**
+     * Loads the projection matrix for static shader into the program.
+     * @param projectionMatrix the projection matrix for the shader
+     */
+    fun loadProjectionMatrix(projectionMatrix: Matrix4f) {
+        loadMatrix(locationProjectionMatrix, projectionMatrix)
     }
 
+    /**
+     * Loads the view matrix for the static shader into the program.
+     * @param camera the location for which to generate the view matrix for the shader
+     */
     fun loadViewMatrix(camera: Camera) {
         val viewMatrix = createViewMatrix(camera)
         viewMatrix.m30 = 0f
@@ -69,8 +77,8 @@ class SkyboxShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     companion object {
-        private const val FRAGMENT_FILE_PATH = "src/main/resources/shaders/skyboxFragmentShader.fs"
-        private const val VERTEX_FILE_PATH = "src/main/resources/shaders/skyboxVertexShader.vs"
+        private const val FRAGMENT_FILE_PATH = "shaders/skyboxFragmentShader.frag"
+        private const val VERTEX_FILE_PATH = "shaders/skyboxVertexShader.vert"
 
         private const val ROTATION_SPEED = 1f
     }

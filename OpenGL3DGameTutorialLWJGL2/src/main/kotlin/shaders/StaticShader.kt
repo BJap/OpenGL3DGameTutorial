@@ -55,8 +55,12 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector2D(locationOffset, Vector2f(x, y))
     }
 
-    fun loadProjectionMatrix(projection: Matrix4f) {
-        loadMatrix(locationProjectionMatrix, projection)
+    /**
+     * Loads the projection matrix for static shader into the program.
+     * @param projectionMatrix the projection matrix for the shader
+     */
+    fun loadProjectionMatrix(projectionMatrix: Matrix4f) {
+        loadMatrix(locationProjectionMatrix, projectionMatrix)
     }
 
     fun loadShineVariables(damper: Float, reflectivity: Float) {
@@ -69,12 +73,17 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     }
 
     /**
-     * Load the transformation matrix for the current entity into the program.
+     * Loads the transformation matrix for the static shader into the program.
+     * @param transformationMatrix the transformation matrix for the shader
      */
-    fun loadTransformationMatrix(transformation: Matrix4f) {
-        loadMatrix(locationTransformationMatrix, transformation)
+    fun loadTransformationMatrix(transformationMatrix: Matrix4f) {
+        loadMatrix(locationTransformationMatrix, transformationMatrix)
     }
 
+    /**
+     * Loads the view matrix for the static shader into the program.
+     * @param camera the location for which to generate the view matrix for the shader
+     */
     fun loadViewMatrix(camera: Camera) {
         val viewMatrix = createViewMatrix(camera)
 
@@ -109,7 +118,7 @@ class StaticShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         private const val MAX_LIGHTS = 4
 
         // The locations of the static shaders.
-        private const val FRAGMENT_FILE_PATH = "src/main/resources/shaders/staticFragmentShader.fs"
-        private const val VERTEX_FILE_PATH = "src/main/resources/shaders/staticVertexShader.vs"
+        private const val FRAGMENT_FILE_PATH = "shaders/staticFragmentShader.frag"
+        private const val VERTEX_FILE_PATH = "shaders/staticVertexShader.vert"
     }
 }

@@ -78,8 +78,6 @@ class WindowManager {
             GLFW.glfwDestroyWindow(window)
             GLFW.glfwTerminate()
             GLFW.glfwSetErrorCallback(null)?.free()
-
-            exitProcess(0)
         }
 
         fun updateDisplay() {

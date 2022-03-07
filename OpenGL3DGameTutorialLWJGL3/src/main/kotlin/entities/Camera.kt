@@ -6,7 +6,11 @@ import org.lwjgl.glfw.GLFW
 import kotlin.math.cos
 import kotlin.math.sin
 
+/**
+ * The viewing point from which to place the camera.
+ */
 class Camera(private val player: Player) {
+    // The locations and rotations for the camera
     var position = Vector3D(100f, 35f, 35f)
         private set
     var pitch = 10f

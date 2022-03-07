@@ -116,20 +116,20 @@ class SkyboxRenderer(loader: Loader, projectionMatrix: Matrix4D) {
             SIZE, -SIZE, SIZE
         )
         private val DAY_TEXTURE_FILES = arrayOf(
-            "src/main/resources/textures/dayRight.png",
-            "src/main/resources/textures/dayLeft.png",
-            "src/main/resources/textures/dayTop.png",
-            "src/main/resources/textures/dayBottom.png",
-            "src/main/resources/textures/dayBack.png",
-            "src/main/resources/textures/dayFront.png"
+            "textures/dayRight.png",
+            "textures/dayLeft.png",
+            "textures/dayTop.png",
+            "textures/dayBottom.png",
+            "textures/dayBack.png",
+            "textures/dayFront.png"
         )
         private val NIGHT_TEXTURE_FILES = arrayOf(
-            "src/main/resources/textures/nightRight.png",
-            "src/main/resources/textures/nightLeft.png",
-            "src/main/resources/textures/nightTop.png",
-            "src/main/resources/textures/nightBottom.png",
-            "src/main/resources/textures/nightBack.png",
-            "src/main/resources/textures/nightFront.png"
+            "textures/nightRight.png",
+            "textures/nightLeft.png",
+            "textures/nightTop.png",
+            "textures/nightBottom.png",
+            "textures/nightBack.png",
+            "textures/nightFront.png"
         )
     }
 }

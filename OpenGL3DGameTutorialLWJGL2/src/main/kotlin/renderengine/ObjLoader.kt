@@ -5,27 +5,16 @@ import models.RawModel
 import org.lwjgl.util.vector.Vector2f
 import org.lwjgl.util.vector.Vector3f
 import java.io.BufferedReader
-import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileReader
-import kotlin.system.exitProcess
 
 class ObjLoader {
     companion object {
         // Include Normals, Include UVs, Triangulate Faces, and -Z Forward
         fun loadObjModel(path: String, loader: Loader): RawModel {
-            val fileReader: FileReader
-
-            try {
-                fileReader = FileReader(File(path))
-            } catch (e: FileNotFoundException) {
-                System.err.println("Couldn't load file!")
-
-                e.printStackTrace()
-
-                exitProcess(-1)
-            }
-
+            val objectSource = this::class.java.classLoader.getResource(path)
+                ?: throw FileNotFoundException("Object file at path '$path' does not exist")
+            val fileReader = FileReader(objectSource.file)
             val bufferedReader = BufferedReader(fileReader)
 
             val vertices = ArrayList<Vector3f>()

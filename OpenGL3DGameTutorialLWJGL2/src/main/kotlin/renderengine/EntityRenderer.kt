@@ -15,7 +15,7 @@ import util.createTransformationMatrix
  * @param staticShader the shader program used specifically for entities
  * @param projectionMatrix the window through which to render the entities within
  */
-class EntityRenderer(private val staticShader: StaticShader, projectionMatrix: Matrix4f) {
+class EntityRenderer(private val staticShader: StaticShader, private val projectionMatrix: Matrix4f) {
     init {
         staticShader.start()
         staticShader.loadProjectionMatrix(projectionMatrix)

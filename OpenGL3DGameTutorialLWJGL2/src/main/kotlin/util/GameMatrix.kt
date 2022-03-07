@@ -10,12 +10,12 @@ import org.lwjgl.util.vector.Vector2f
  */
 
 /**
- * Create a projection matrix for the window dimensions.
+ * Creates a projection matrix for the window dimensions.
  * @param fov the angle between the upper and lower sides of the viewing frustum
  * @param aspectRatio the aspect ratio of the viewing window
  * @param zNear the distance to the near clipping plane along the -Z axis
  * @param zFar the distance to the far clipping plane along the -Z axis
- * @return the perspective transformation matrix
+ * @return the perspective projection matrix
  */
 fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: Float): Matrix4f {
     val projectionMatrix = Matrix4f()
@@ -34,7 +34,7 @@ fun createProjectionMatrix(fov: Float, aspectRatio: Float, zNear: Float, zFar: F
 }
 
 /**
- * Create a transformation matrix for the GUI.
+ * Creates a transformation matrix for the GUI.
  * @param translation the position of the GUI element
  * @param scale the size of the GUI element
  * @return the 2D model transformation matrix
@@ -49,7 +49,7 @@ fun createTransformationMatrix(translation: Vector2f, scale: Vector2f): Matrix4f
 }
 
 /**
- * Create a transformation matrix for game objects and terrain.
+ * Creates a transformation matrix for game objects and terrain.
  * @param translation the position of the 3D object
  * @param rx the x rotation of the 3D object
  * @param ry the y rotation of the 3D object
@@ -87,7 +87,7 @@ fun createTransformationMatrix(translation: Vector3f, rx: Float, ry: Float, rz: 
 }
 
 /**
- * Create a view matrix for the view of the camera.
+ * Creates a view matrix for the view of the camera.
  * @param camera the camera for which to create a matrix
  * @return the view transformation matrix
  */

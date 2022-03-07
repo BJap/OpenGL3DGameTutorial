@@ -6,16 +6,13 @@ import geometry.Vector3D
 import org.lwjgl.BufferUtils
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL20
-import java.io.BufferedReader
 import java.io.FileNotFoundException
-import java.io.FileReader
-import java.io.IOException
 import kotlin.system.exitProcess
 
 /**
  * A program to load shaders and apply them during rendering.
- * @param vertexFilePath the location of the vertex shader
- * @param fragmentFilePath the location of the fragment shader
+ * @param vertexFilePath the location of the vertex shader within the resources folder
+ * @param fragmentFilePath the location of the fragment shader within the resources folder
  */
 abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     // The ID for the rendering program used by the graphics hardware.
@@ -89,6 +86,7 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
     /**
      * Gets the location of a uniform related to the vertex shader.
      * @param uniformName the name of the uniform to find
+     * @return the location of the uniform variable
      */
     protected fun getUniformLocation(uniformName: String): Int {
         return GL20.glGetUniformLocation(programId, uniformName)
@@ -138,28 +136,13 @@ abstract class ShaderProgram(vertexFilePath: String, fragmentFilePath: String) {
 
         /**
          * Loads a shader into memory.
-         * @param path the location of the shader
+         * @param path the location of the shader within the resources folder
          * @param type the type of shader
+         * @return the id of the new shader
          */
         fun loadShader(path: String, type: Int): Int {
-            val shaderSource = StringBuilder()
-
-            try {
-                BufferedReader(FileReader(path)).use { reader ->
-                    reader.forEachLine { line ->
-                        shaderSource.append(line).append("\n")
-                    }
-                }
-            } catch (e: FileNotFoundException) {
-                System.err.println("Shader file does not exist\n${e.stackTraceToString()}")
-
-                exitProcess(-1)
-            } catch (e: IOException) {
-                System.err.println("Could not read shader file\n${e.stackTraceToString()}")
-
-                exitProcess(-1)
-            }
-
+            val shaderSource = this::class.java.classLoader.getResource(path)?.readText()
+                ?: throw FileNotFoundException("Shader file at path '$path' does not exist")
             val shaderId = GL20.glCreateShader(type)
 
             GL20.glShaderSource(shaderId, shaderSource)

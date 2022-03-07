@@ -6,14 +6,14 @@ import entities.Light
 import models.Loader
 import models.TexturedModel
 import org.lwjgl.opengl.GL11
-import org.lwjgl.util.vector.Matrix4f
 import shaders.StaticShader
 import shaders.TerrainShader
 import terrains.Terrain
 import util.createProjectionMatrix
 
 class MasterRenderer(loader: Loader) {
-    val projectionMatrix: Matrix4f
+    // Enables the ability to view 3D objects on a 2D display.
+    val projectionMatrix = createProjectionMatrix(FOV, WindowManager.aspectRatio, Z_NEAR, Z_FAR)
 
     // Enables detailing for each rendered entity.
     private val staticShader = StaticShader()
@@ -33,11 +33,11 @@ class MasterRenderer(loader: Loader) {
     init {
         enableCulling()
 
-        projectionMatrix = createProjectionMatrix(FOV, WindowManager.aspectRatio, Z_NEAR, Z_FAR)
-
         entityRenderer = EntityRenderer(staticShader, projectionMatrix)
         terrainRenderer = TerrainRenderer(terrainShader, projectionMatrix)
         skyboxRenderer = SkyboxRenderer(loader, projectionMatrix)
+
+        GL11.glClearColor(RED, GREEN, BLUE, 1f)
     }
 
     /**
@@ -116,10 +116,10 @@ class MasterRenderer(loader: Loader) {
     private fun prepare() {
         GL11.glEnable(GL11.GL_DEPTH_TEST)
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT or GL11.GL_DEPTH_BUFFER_BIT)
-        GL11.glClearColor(RED, GREEN, BLUE, 1f)
     }
 
     companion object {
+        // The values related to what to render starting from one position to another in the distance.
         private const val FOV = 70f
         private const val Z_NEAR = 0.1f
         private const val Z_FAR = 1000f

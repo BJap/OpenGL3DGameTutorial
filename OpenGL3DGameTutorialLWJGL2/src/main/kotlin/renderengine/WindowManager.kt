@@ -6,7 +6,6 @@ import org.lwjgl.opengl.Display
 import org.lwjgl.opengl.DisplayMode
 import org.lwjgl.opengl.PixelFormat
 import java.awt.Dimension
-import kotlin.system.exitProcess
 
 class WindowManager {
     companion object {
@@ -46,8 +45,6 @@ class WindowManager {
 
         fun destroyDisplay() {
             Display.destroy()
-
-            exitProcess(0)
         }
 
         fun updateDisplay() {

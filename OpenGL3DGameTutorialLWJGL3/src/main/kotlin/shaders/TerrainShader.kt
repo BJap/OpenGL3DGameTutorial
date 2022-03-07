@@ -48,8 +48,12 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         }
     }
 
-    fun loadProjectionMatrix(projection: Matrix4D) {
-        loadMatrix(locationProjectionMatrix, projection)
+    /**
+     * Loads the projection matrix for static shader into the program.
+     * @param projectionMatrix the projection matrix for the shader
+     */
+    fun loadProjectionMatrix(projectionMatrix: Matrix4D) {
+        loadMatrix(locationProjectionMatrix, projectionMatrix)
     }
 
     fun loadShineVariables(damper: Float, reflectivity: Float) {
@@ -61,10 +65,18 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
         loadVector3D(locationSkyColor, Vector3D(r, g, b))
     }
 
-    fun loadTransformationMatrix(transformation: Matrix4D) {
-        loadMatrix(locationTransformationMatrix, transformation)
+    /**
+     * Loads the transformation matrix for the static shader into the program.
+     * @param transformationMatrix the transformation matrix for the shader
+     */
+    fun loadTransformationMatrix(transformationMatrix: Matrix4D) {
+        loadMatrix(locationTransformationMatrix, transformationMatrix)
     }
 
+    /**
+     * Loads the view matrix for the static shader into the program.
+     * @param camera the location for which to generate the view matrix for the shader
+     */
     fun loadViewMatrix(camera: Camera) {
         val viewMatrix = createViewMatrix(camera)
 
@@ -100,7 +112,7 @@ class TerrainShader : ShaderProgram(VERTEX_FILE_PATH, FRAGMENT_FILE_PATH) {
     companion object {
         private const val MAX_LIGHTS = 4
 
-        private const val FRAGMENT_FILE_PATH = "src/main/resources/shaders/terrainFragmentShader.fs"
-        private const val VERTEX_FILE_PATH = "src/main/resources/shaders/terrainVertexShader.vs"
+        private const val FRAGMENT_FILE_PATH = "shaders/terrainFragmentShader.frag"
+        private const val VERTEX_FILE_PATH = "shaders/terrainVertexShader.vert"
     }
 }

@@ -8,7 +8,7 @@ group 'com.bobbyjap'
 version '1.0-SNAPSHOT'
 
 def kotlinVersion = '1.6.10'
-def lwjglVersion = '3.3.0'
+def lwjglVersion = '3.3.1'
 
 def os = OperatingSystem.current()
 def osArch = System.getProperty("os.arch")
@@ -21,7 +21,9 @@ if (os.isLinux()) {
     lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
             ? "natives-macos-arm64" : "natives-macos"
 } else if (os.isWindows()) {
-    lwjglNatives = osArch.contains("64") ? "natives-windows" : "natives-windows-x86"
+    lwjglNatives = osArch.contains("64")
+            ? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+            : "natives-windows-x86"
 } else {
     throw new UnknownConfigurationException("Operating System " + os.getName() + " is not supported")
 }

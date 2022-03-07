@@ -5,7 +5,11 @@ import org.lwjgl.util.vector.Vector3f
 import kotlin.math.cos
 import kotlin.math.sin
 
+/**
+ * The viewing point from which to place the camera.
+ */
 class Camera(private val player: Player) {
+    // The locations and rotations for the camera
     var position = Vector3f(0f, 0f, 0f)
         private set
     var pitch = 10f
